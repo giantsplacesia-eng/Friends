@@ -12,7 +12,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: 'home', label: 'Home' }, // explicit Home to reset giant
+  { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'services', label: 'Services' },
   { id: 'work', label: 'Work' },
@@ -55,7 +55,13 @@ export function LeftController({ activeSection, onSectionChange }: LeftControlle
   return (
     <aside
       ref={containerRef}
-      className="h-screen w-full bg-giant-sage p-8 flex flex-col gap-6 overflow-y-auto no-scrollbar z-50 border-r border-black/10"
+      className="h-screen w-full bg-giant-sage p-8 flex flex-col gap-6 overflow-y-auto z-50 border-r border-black/10"
+      style={{
+        scrollbarWidth: 'none', // Firefox
+        msOverflowStyle: 'none', // IE/Edge
+        WebkitOverflowScrolling: 'touch', // iOS smooth scroll
+        transform: 'translateZ(0)', // GPU acceleration
+      }}
     >
       <div className="mb-12 cursor-pointer w-full" onClick={() => onSectionChange('home')}>
         {/* Logo - matches button width */}

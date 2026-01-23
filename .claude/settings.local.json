@@ -14,7 +14,12 @@
       "mcp__MCP_DOCKER__brave_web_search",
       "Bash(ls:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nMilestone: Working Giant scroll animation with documented safeguards\n\nCore Features:\n- Giant PNG sequence scroll-scrubbing with GSAP ScrollTrigger\n- Lenis smooth scroll integration\n- 88 frame animation \\(Sequence 01_100 to 01_187\\)\n- Fixed canvas background with proper z-index layering\n\nCritical Configuration \\(GiantHeroGSAP.tsx\\):\n- pin: true - Enables scroll-scrubbing effect\n- anticipatePin: 1 - Prevents layout shift\n- render\\(\\) before ScrollTrigger setup - Ensures first frame visible\n- onUpdate callback - Triggers frame drawing on scroll\n- markers: true - Debug mode \\(green/red scroll markers\\)\n\nDocumentation Updates:\n- Added comprehensive ScrollTrigger configuration guide\n- Added troubleshooting section for frozen animation issue\n- Added critical rules to prevent future breakage\n- Documented Lenis + GSAP integration pattern\n\nTechnical Stack:\n- Next.js 15.5+ with App Router\n- React 19\n- GSAP 3.12+ with ScrollTrigger\n- Lenis smooth scroll\n- TypeScript strict mode\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git config:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ]
   }
 }

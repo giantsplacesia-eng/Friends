@@ -53,6 +53,12 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Hide scrollbar for left navigation (Portorocha pattern) */
+aside::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 /* Custom utilities */
 @layer utilities {
   .text-balance {

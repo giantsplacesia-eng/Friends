@@ -19,9 +19,15 @@ You are the lead engineer for **Friends with Giants**, an AI-first marketing age
 
 ### Animation & 3D
 - **GSAP 3.12+:** ScrollTrigger, Flip, QuickTo for high-performance animations
-- **Lenis:** Smooth scroll physics (60fps guaranteed)
+- **Lenis:** Smooth scroll physics (60fps guaranteed) with cursor-aware delegation
 - **R3F (React Three Fiber):** Background Giant character (future 3D upgrade)
 - **Canvas API:** Current Giant implementation (PNG sequence scrubber)
+
+### Scroll Architecture (CRITICAL)
+- **Two-Column Independent Scroll:** Left nav + Right stage scroll independently
+- **Lenis `prevent` Callback:** Excludes left nav from smooth scrolling
+- **Cursor-Aware:** Scroll context automatically switches based on element hierarchy
+- **No Conflicts:** GSAP ScrollTrigger works perfectly with native nav scroll
 
 ---
 
@@ -209,6 +215,110 @@ ScrollTrigger automatically syncs with Lenis via:
 lenis.on('scroll', ScrollTrigger.update);
 ```
 DO NOT modify this integration - it enables smooth scroll physics.
+
+---
+
+## 4.5. Lenis Cursor-Aware Scroll Delegation (CRITICAL)
+
+### Two-Column Independent Scroll Architecture
+
+**Problem:** Left navigation needs independent scroll while right stage uses Lenis smooth scroll with GSAP.
+
+**Solution:** Lenis `prevent` callback excludes left nav from smooth scrolling.
+
+### Implementation (REQUIRED - DO NOT MODIFY)
+
+```tsx
+// In SmoothScrollProvider.tsx
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  orientation: 'vertical',
+  smoothWheel: true,
+  wheelMultiplier: 1,
+  touchMultiplier: 2,
+  // CRITICAL: Prevent Lenis from capturing scroll on left nav
+  prevent: (node) => {
+    let element = node as HTMLElement;
+    while (element) {
+      if (element.tagName === 'ASIDE') {
+        return true; // Native scroll for left nav
+      }
+      element = element.parentElement as HTMLElement;
+    }
+    return false; // Lenis smooth scroll for everything else
+  }
+});
+```
+
+### How It Works
+
+1. User scrolls anywhere on page
+2. Lenis calls `prevent` callback with target element
+3. Callback traverses DOM tree checking for `<aside>`
+4. If inside `<aside>` → Returns `true` → Native browser scroll
+5. Otherwise → Returns `false` → Lenis smooth scroll
+
+### Why This Pattern Works
+
+✅ **Automatic Detection:** No mouseenter/mouseleave events needed
+✅ **No Race Conditions:** Evaluated per scroll event
+✅ **GSAP Unaffected:** ScrollTrigger continues reading window scroll
+✅ **Native Performance:** Left nav uses browser's native scroll (no overhead)
+✅ **Nested Elements:** Works with any element inside `<aside>`
+
+### Left Nav Requirements
+
+```tsx
+<aside className="
+  fixed top-0 left-0
+  h-screen w-[281px]
+  overflow-y-auto           // REQUIRED - creates scroll container
+  z-50
+">
+  {/* Navigation content */}
+</aside>
+```
+
+**Critical Styles:**
+```css
+/* Hide scrollbar while maintaining functionality */
+aside::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+```
+
+```tsx
+// Inline styles for cross-browser support
+style={{
+  scrollbarWidth: 'none',        // Firefox
+  msOverflowStyle: 'none',       // IE/Edge
+  WebkitOverflowScrolling: 'touch', // iOS smooth
+  transform: 'translateZ(0)'     // GPU acceleration
+}}
+```
+
+### What NOT to Do
+
+❌ **NEVER** try to use `lenis.stop()` and `lenis.start()` with mouseenter/mouseleave
+❌ **NEVER** remove the `prevent` callback
+❌ **NEVER** apply Lenis to left nav directly
+❌ **NEVER** remove `overflow-y: auto` from `<aside>`
+❌ **NEVER** make left nav scrollable via Lenis
+
+### Troubleshooting
+
+**Left nav not scrolling:**
+1. Check `overflow-y: auto` is on `<aside>`
+2. Verify content height exceeds container height
+3. Check `prevent` callback returns `true` for `<aside>`
+4. Open console - should see no Lenis interference
+
+**Right stage not smooth scrolling:**
+1. Check `prevent` callback returns `false` for non-nav elements
+2. Verify Lenis is initialized (check console logs)
+3. Confirm GSAP ScrollTrigger synced: `lenis.on('scroll', ScrollTrigger.update)`
 
 ### Browser Validation Command
 ```bash
