@@ -11,7 +11,6 @@ interface RightStageProps {
 export function RightStage({ activeSection }: RightStageProps) {
     return (
         <main
-            id="right-stage-scroll"
             className="w-full relative bg-giant-white"
         >
             {activeSection === 'home' && (

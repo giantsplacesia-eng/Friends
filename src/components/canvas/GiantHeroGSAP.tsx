@@ -7,8 +7,7 @@ import { HeroSection } from '@/components/sections/HeroSection';
 
 /**
  * GiantHeroGSAP - Apple-style scroll-scrubbed animation
- * Uses GSAP ScrollTrigger with scrub and pin.
- * Restored to stable state without debug markers or complex scroller logic.
+ * Uses GSAP ScrollTrigger with scrub and pin
  */
 export function GiantHeroGSAP() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,16 +19,21 @@ export function GiantHeroGSAP() {
   // Animation proxy - GSAP animates this object
   const animationProxy = useRef({ frame: 0 });
 
-  // Render function - draws specific image to canvas with "Cover" scaling
-  const drawFrame = (img: HTMLImageElement) => {
+  // Render function - draws current frame to canvas
+  const render = () => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
-    if (!canvas || !context || !img || !img.complete) return;
+    if (!canvas || !context || images.length === 0) return;
+
+    const frameIndex = Math.round(animationProxy.current.frame);
+    const img = images[frameIndex];
+
+    if (!img || !img.complete) return;
 
     // Clear and draw
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Scale to COVER (fill) canvas
+    // Scale to COVER (fill) canvas - optimized for desktop
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
     const ratio = Math.max(hRatio, vRatio);
@@ -47,21 +51,14 @@ export function GiantHeroGSAP() {
     );
   };
 
-  // Render current animation frame based on proxy
-  const render = () => {
-    if (images.length === 0) return;
-    const frameIndex = Math.round(animationProxy.current.frame);
-    const img = images[frameIndex];
-    if (img) drawFrame(img);
-  };
-
   // Load all 88 frames
   useEffect(() => {
     const frameCount = 88;
     const loadedImages: HTMLImageElement[] = [];
     let loadCount = 0;
+    let firstFrameRendered = false;
 
-    // console.log('🎬 Starting image load...');
+    console.log('🎬 Starting image load...');
 
     for (let i = 0; i < frameCount; i++) {
       const img = new Image();
@@ -70,21 +67,25 @@ export function GiantHeroGSAP() {
 
       img.onload = () => {
         loadCount++;
+        console.log(`📸 Loaded ${loadCount}/${frameCount}`);
 
-        // Render first frame immediately to prevent blank screen
-        if (frameIndex === 100) {
-          drawFrame(img);
+        // Render first frame as soon as it loads
+        if (!firstFrameRendered && canvasRef.current) {
+          firstFrameRendered = true;
+          canvasRef.current.width = window.innerWidth;
+          canvasRef.current.height = window.innerHeight;
+          console.log('🎨 Rendering first frame');
         }
 
         if (loadCount === frameCount) {
-          console.log('✅ All Giant frames loaded');
+          console.log('✅ All frames loaded!');
           setImages(loadedImages);
           setLoadingStatus("Done");
         }
       };
 
       img.onerror = () => {
-        console.error('❌ Failed to load Giant frame:', img.src);
+        console.error('❌ Failed to load:', img.src);
         setErrorConfig(img.src);
       };
 
@@ -92,12 +93,11 @@ export function GiantHeroGSAP() {
     }
   }, []);
 
-  // Canvas resize handler
+  // Canvas resize
   useEffect(() => {
     const handleResize = () => {
-      if (canvasRef.current && containerRef.current) {
-        // Match canvas dimensions to the container (Right Stage)
-        canvasRef.current.width = containerRef.current.offsetWidth;
+      if (canvasRef.current) {
+        canvasRef.current.width = window.innerWidth;
         canvasRef.current.height = window.innerHeight;
         render();
       }
@@ -111,12 +111,28 @@ export function GiantHeroGSAP() {
 
   // GSAP ScrollTrigger Animation
   useGSAP(() => {
-    if (loadingStatus !== "Done" || images.length === 0 || !containerRef.current) return;
+    console.log('🔍 useGSAP hook fired!');
 
-    // Render initial state
+    if (loadingStatus !== "Done") {
+      console.log('⏳ Waiting for images to finish loading...');
+      return;
+    }
+
+    if (images.length === 0) {
+      console.log('⏳ Waiting for images array to populate...');
+      return;
+    }
+
+    if (!containerRef.current) {
+      console.log('⏳ Waiting for container ref...');
+      return;
+    }
+
+    console.log('🚀 Setting up GSAP ScrollTrigger with', images.length, 'frames');
+
+    // Render the first frame immediately
     render();
 
-    // Setup GSAP animation
     const tl = gsap.to(animationProxy.current, {
       frame: images.length - 1,
       ease: 'none',
@@ -125,12 +141,29 @@ export function GiantHeroGSAP() {
         start: 'top top',
         end: 'bottom bottom',
         scrub: 0.5,
+        markers: true,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-        onUpdate: () => render(),
+        onUpdate: (self) => {
+          console.log('📊 Progress:', (self.progress * 100).toFixed(1) + '%', 'Frame:', Math.round(animationProxy.current.frame));
+          render();
+        },
+        onRefresh: () => {
+          console.log('🔄 ScrollTrigger refreshed');
+        },
+        onEnter: () => console.log('🎯 Entered trigger area'),
+        onLeave: () => console.log('👋 Left trigger area')
       }
     });
+
+    console.log('✅ ScrollTrigger created:', tl.scrollTrigger);
+
+    // Force refresh after a small delay to ensure DOM is ready
+    setTimeout(() => {
+      console.log('🔄 Forcing ScrollTrigger refresh...');
+      ScrollTrigger.refresh();
+    }, 100);
 
     return () => {
       tl.scrollTrigger?.kill();
@@ -141,7 +174,7 @@ export function GiantHeroGSAP() {
   if (errorConfig) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-500">Error loading Giant animation.</p>
+        <p className="text-red-500">Error loading: {errorConfig}</p>
       </div>
     );
   }
@@ -151,14 +184,19 @@ export function GiantHeroGSAP() {
       <div ref={containerRef} className="relative w-full h-[300vh]">
         <canvas
           ref={canvasRef}
-          className="absolute top-0 left-0 w-full h-screen object-cover pointer-events-none"
+          className="fixed top-0 left-0 w-screen h-screen pointer-events-none"
           style={{ zIndex: 0 }}
         />
 
-        {/* Hero Text Overlay - stays fixed while canvas scrolls */}
-        <div className="fixed top-0 left-0 w-full h-screen pointer-events-none flex items-center justify-center" style={{ zIndex: 20 }}>
+        <div className="fixed top-0 left-0 w-screen h-screen pointer-events-none flex items-center justify-center" style={{ zIndex: 20 }}>
           <HeroSection />
         </div>
+
+        {loadingStatus === "Done" && (
+          <div className="absolute bottom-4 right-4 bg-black/50 text-white p-2 rounded text-xs" style={{ zIndex: 30 }}>
+            Frame: {Math.round(animationProxy.current.frame) + 1}/{images.length}
+          </div>
+        )}
       </div>
 
       {loadingStatus !== "Done" && (

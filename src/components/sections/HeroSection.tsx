@@ -11,14 +11,14 @@ export function HeroSection() {
   return (
     <section className="relative h-screen w-full flex items-start justify-center pointer-events-none" style={{ paddingTop: '32px' }}>
       {/* Full Logo - Centered, 15% smaller (212.5% of original), dark grey/green color, top-aligned with FWG logo */}
-      <div className="relative z-20 pointer-events-auto" style={{ maxWidth: '1400px', width: '100%' }}>
+      <div className="relative z-20 pointer-events-auto flex justify-center" style={{ maxWidth: '1400px', width: '100%' }}>
         <div style={{ filter: 'brightness(0) saturate(100%) invert(16%) sepia(7%) saturate(479%) hue-rotate(106deg) brightness(96%) contrast(92%)' }}>
           <Image
             src="/logo svgs/FriendswGiantslogo.svg"
             alt="Friends with Giants"
             width={1360}
             height={330}
-            className="w-full h-auto"
+            className="h-auto"
             priority
           />
         </div>
