@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { LeftController } from '@/components/nav/LeftController';
 import { RightStage } from '@/components/layout/RightStage';
-import { ReferenceOverlay } from '@/components/debug/ReferenceOverlay';
+// TEMPORARILY DISABLED: ReferenceOverlay can cause hydration errors
+// import { ReferenceOverlay } from '@/components/debug/ReferenceOverlay';
 
 import { MobileAccordionLayout } from '@/components/layout/MobileAccordionLayout';
 
@@ -12,7 +13,8 @@ export default function Home() {
 
   return (
     <div className="relative bg-giant-white">
-      <ReferenceOverlay />
+      {/* TEMPORARILY DISABLED: Testing hydration fix */}
+      {/* <ReferenceOverlay /> */}
 
       {/* --- DESKTOP LAYOUT (Hidden on Mobile) --- */}
       <div className="hidden md:block">
