@@ -11,24 +11,25 @@ interface RightStageProps {
 
 export function RightStage({ activeSection }: RightStageProps) {
     return (
-        <main
-            className="w-full relative bg-giant-white"
-        >
+        <main className="w-full relative bg-giant-white min-h-screen">
+            {/*
+               CRITICAL: Do NOT put overflow-hidden or h-screen on this div
+               Must allow GSAP to grow the container height with pin-spacer
+            */}
             {activeSection === 'home' && (
-                <>
-                    {/* Giant Hero - Apple-style GSAP ScrollTrigger */}
+                <div className="flex flex-col w-full relative">
+                    {/* Giant Hero Animation */}
                     <GiantHeroGSAP />
 
-                    {/* IntegrativeAI section - blue gradient appears after Giant animation */}
-                    <div className="relative" style={{ zIndex: 30 }}>
+                    {/* This section follows the Hero - MUST be outside the pinned area */}
+                    <div className="relative z-30 bg-giant-white min-h-screen w-full">
                         <IntegrativeAI />
                     </div>
 
-                    {/* Introduction section - appears after IntegrativeAI */}
-                    <div className="relative z-10 bg-giant-white">
+                    <div className="relative z-10 bg-giant-white min-h-screen w-full">
                         <Introduction />
                     </div>
-                </>
+                </div>
             )}
 
             {activeSection === 'about' && (

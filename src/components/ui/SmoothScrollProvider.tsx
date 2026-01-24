@@ -46,6 +46,28 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
+    // CRITICAL: When ScrollTrigger refreshes (e.g., after images load),
+    // tell Lenis to recalculate the scrollable height
+    ScrollTrigger.addEventListener('refresh', () => {
+      lenis.resize();
+      console.log('🔄 Lenis resized after ScrollTrigger refresh');
+    });
+
+    // Tell ScrollTrigger about Lenis as the scroller
+    ScrollTrigger.scrollerProxy(document.documentElement, {
+      scrollTop(value) {
+        if (arguments.length) {
+          lenis.scrollTo(value, { immediate: true });
+          return;
+        }
+        return lenis.scroll;
+      },
+      getBoundingClientRect() {
+        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+      },
+      pinType: document.documentElement.style.transform ? "transform" : "fixed"
+    });
+
     // Animation loop
     function raf(time: number) {
       lenis.raf(time);
