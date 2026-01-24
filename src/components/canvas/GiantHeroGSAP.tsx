@@ -58,8 +58,6 @@ export function GiantHeroGSAP() {
     let loadCount = 0;
     let firstFrameRendered = false;
 
-    console.log('🎬 Starting image load...');
-
     for (let i = 0; i < frameCount; i++) {
       const img = new Image();
       const frameIndex = 100 + i; // 100 to 187
@@ -67,25 +65,21 @@ export function GiantHeroGSAP() {
 
       img.onload = () => {
         loadCount++;
-        console.log(`📸 Loaded ${loadCount}/${frameCount}`);
 
         // Render first frame as soon as it loads
         if (!firstFrameRendered && canvasRef.current) {
           firstFrameRendered = true;
           canvasRef.current.width = window.innerWidth;
           canvasRef.current.height = window.innerHeight;
-          console.log('🎨 Rendering first frame');
         }
 
         if (loadCount === frameCount) {
-          console.log('✅ All frames loaded!');
           setImages(loadedImages);
           setLoadingStatus("Done");
         }
       };
 
       img.onerror = () => {
-        console.error('❌ Failed to load:', img.src);
         setErrorConfig(img.src);
       };
 
@@ -111,24 +105,17 @@ export function GiantHeroGSAP() {
 
   // GSAP ScrollTrigger Animation
   useGSAP(() => {
-    console.log('🔍 useGSAP hook fired!');
-
     if (loadingStatus !== "Done") {
-      console.log('⏳ Waiting for images to finish loading...');
       return;
     }
 
     if (images.length === 0) {
-      console.log('⏳ Waiting for images array to populate...');
       return;
     }
 
     if (!containerRef.current) {
-      console.log('⏳ Waiting for container ref...');
       return;
     }
-
-    console.log('🚀 Setting up GSAP ScrollTrigger with', images.length, 'frames');
 
     // Render the first frame immediately
     render();
@@ -145,23 +132,14 @@ export function GiantHeroGSAP() {
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          console.log('📊 Progress:', (self.progress * 100).toFixed(1) + '%', 'Frame:', Math.round(animationProxy.current.frame));
+        onUpdate: () => {
           render();
-        },
-        onRefresh: () => {
-          console.log('🔄 ScrollTrigger refreshed');
-        },
-        onEnter: () => console.log('🎯 Entered trigger area'),
-        onLeave: () => console.log('👋 Left trigger area')
+        }
       }
     });
 
-    console.log('✅ ScrollTrigger created:', tl.scrollTrigger);
-
     // Force refresh after a small delay to ensure DOM is ready
     setTimeout(() => {
-      console.log('🔄 Forcing ScrollTrigger refresh...');
       ScrollTrigger.refresh();
     }, 100);
 
@@ -191,12 +169,6 @@ export function GiantHeroGSAP() {
         <div className="fixed top-0 left-0 w-screen h-screen pointer-events-none flex items-center justify-center" style={{ zIndex: 20 }}>
           <HeroSection />
         </div>
-
-        {loadingStatus === "Done" && (
-          <div className="absolute bottom-4 right-4 bg-black/50 text-white p-2 rounded text-xs" style={{ zIndex: 30 }}>
-            Frame: {Math.round(animationProxy.current.frame) + 1}/{images.length}
-          </div>
-        )}
       </div>
 
       {loadingStatus !== "Done" && (

@@ -65,3 +65,11 @@ aside::-webkit-scrollbar {
     text-wrap: balance;
   }
 }
+
+/* Hide GSAP ScrollTrigger debug markers (keep markers: true for functionality) */
+.gsap-marker-scroller-start,
+.gsap-marker-scroller-end,
+.gsap-marker-start,
+.gsap-marker-end {
+  opacity: 0 !important;
+}
