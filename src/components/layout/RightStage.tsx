@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { GiantHeroGSAP } from '@/components/canvas/GiantHeroGSAP';
+import { IntegrativeAI } from '@/components/sections/IntegrativeAI';
 import { Introduction } from '@/components/sections/Introduction';
 
 interface RightStageProps {
@@ -18,7 +19,12 @@ export function RightStage({ activeSection }: RightStageProps) {
                     {/* Giant Hero - Apple-style GSAP ScrollTrigger */}
                     <GiantHeroGSAP />
 
-                    {/* Introduction section - appears after Giant animation completes */}
+                    {/* IntegrativeAI section - blue gradient appears after Giant animation */}
+                    <div className="relative" style={{ zIndex: 30 }}>
+                        <IntegrativeAI />
+                    </div>
+
+                    {/* Introduction section - appears after IntegrativeAI */}
                     <div className="relative z-10 bg-giant-white">
                         <Introduction />
                     </div>
