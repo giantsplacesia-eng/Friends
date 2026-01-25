@@ -3,6 +3,7 @@
 import React from 'react';
 import { GiantHeroGSAP } from '@/components/canvas/GiantHeroGSAP';
 import { IntegrativeAI } from '@/components/sections/IntegrativeAI';
+import GeometricCycleSection from '@/components/sections/HowCanWeHelp_v3';
 import { Introduction } from '@/components/sections/Introduction';
 
 interface RightStageProps {
@@ -21,9 +22,17 @@ export function RightStage({ activeSection }: RightStageProps) {
                     {/* Giant Hero Animation */}
                     <GiantHeroGSAP />
 
-                    {/* This section follows the Hero - MUST be outside the pinned area */}
-                    <div className="relative z-30 bg-giant-white min-h-screen w-full">
+                    {/* Blue gradient container for IntegrativeAI + HowCanWeHelp sections */}
+                    <div
+                        className="relative z-30 w-full"
+                        style={{ background: 'linear-gradient(180deg, #0075A3 0%, #005580 100%)' }}
+                    >
+                        {/* NOISE/GRAIN LAYER - Applied to entire blue section */}
+                        <div className="absolute inset-0 z-50 pointer-events-none opacity-[0.05] contrast-150 brightness-100"
+                             style={{ backgroundImage: `url('https://assets.codepen.io/7558/noise-002.png')` }} />
+
                         <IntegrativeAI />
+                        <GeometricCycleSection />
                     </div>
 
                     <div className="relative z-10 bg-giant-white min-h-screen w-full">
