@@ -342,6 +342,135 @@ When service is active, scrub to corresponding frame range.
 
 ---
 
+## 4.6. GSAP ScrollTrigger Pinning Chain (CRITICAL)
+
+### The Pinning Problem
+
+When you have **multiple pinned sections** stacked vertically (GiantHero → GeometricCycle → VideoOverlay), GSAP needs to calculate their ScrollTrigger positions in the correct order. Each pinned section creates a "pin-spacer" that adds virtual scroll height, which affects where the next section should trigger.
+
+**Without proper ordering:** Later sections trigger too early because they don't know about the spacer height added by earlier sections.
+
+### The Solution: refreshPriority
+
+`refreshPriority` tells GSAP which ScrollTriggers to calculate first. Lower numbers = higher priority (calculated earlier).
+
+**Current Pinning Chain (DO NOT MODIFY):**
+
+```tsx
+// 1. GiantHeroGSAP.tsx
+scrollTrigger: {
+  trigger: containerRef.current,
+  start: 'top top',
+  end: '+=200%',
+  pin: true,
+  pinSpacing: true,
+  refreshPriority: -1,  // FIRST - calculates before all other sections
+  // ... other config
+}
+
+// 2. HowCanWeHelp_v3.tsx (GeometricCycleSection)
+scrollTrigger: {
+  trigger: containerRef.current,
+  start: 'top top',
+  end: '+=800%',
+  pin: true,
+  refreshPriority: -2,  // SECOND - calculates after GiantHero
+  // ... other config
+}
+
+// 3. VideoOverlaySection.tsx (DarkDrawerSection)
+scrollTrigger: {
+  trigger: containerRef.current,
+  start: 'top top',
+  end: '+=300%',
+  pin: true,
+  pinSpacing: true,
+  refreshPriority: -3,  // THIRD - calculates after Geometric
+  // ... other config
+}
+```
+
+### How It Works
+
+1. **Page loads** → All images/assets load
+2. **GiantHeroGSAP** triggers `ScrollTrigger.refresh()` after 500ms
+3. **GSAP calculates in order:**
+   - `-1` (GiantHero): Creates pin-spacer, adds 200vh to page
+   - `-2` (Geometric): Sees GiantHero's spacer, triggers after it, adds 800vh
+   - `-3` (VideoOverlay): Sees both spacers, triggers after Geometric, adds 300vh
+4. **Total scroll height:** Normal content + 200vh + 800vh + 300vh = 1300vh of pinned animations
+
+### Critical Rules
+
+**✅ DO:**
+- Always set `refreshPriority` on pinned sections
+- Use sequential negative numbers (-1, -2, -3, etc.)
+- Set `pinSpacing: true` to push content below the pin
+- Call `ScrollTrigger.refresh()` after async content loads (images, fonts)
+
+**❌ NEVER:**
+- Remove `refreshPriority` from existing pinned sections
+- Change the priority order (GiantHero must always be -1)
+- Add new pinned sections without assigning a priority
+- Use the same priority number for multiple sections
+
+### Adding a New Pinned Section
+
+If you need to add a 4th pinned section (e.g., "TeamShowcase"):
+
+```tsx
+// 4. TeamShowcase.tsx
+scrollTrigger: {
+  trigger: containerRef.current,
+  start: 'top top',
+  end: '+=150%',
+  pin: true,
+  pinSpacing: true,
+  refreshPriority: -4,  // FOURTH - calculates after VideoOverlay
+}
+```
+
+Then add it to RightStage.tsx **after** VideoOverlaySection:
+```tsx
+<VideoOverlaySection />
+<TeamShowcase />
+<Introduction />
+```
+
+### Debugging Pinning Issues
+
+**Symptoms of broken pinning chain:**
+- Section triggers while previous section is still animating
+- ScrollTrigger progress stuck at 0.00
+- Section doesn't pin at all (scrolls past immediately)
+- Visible "jump" when section enters viewport
+
+**Fix:**
+1. Check browser console for ScrollTrigger warnings
+2. Enable `markers: true` to see trigger start/end points
+3. Verify `refreshPriority` is set and sequential
+4. Check that `pinSpacing: true` is present
+5. Ensure no `overflow-hidden` on parent containers
+
+### The "Handshake" Pattern
+
+After images load in GiantHeroGSAP:
+```tsx
+setTimeout(() => {
+  ScrollTrigger.refresh();
+  console.log('🤝 Handshake complete - All ScrollTriggers refreshed');
+}, 500);
+```
+
+This 500ms delay allows:
+- DOM to settle after pin-spacers are created
+- Browser to complete layout calculations
+- All subsequent sections to recalculate with correct scroll positions
+
+**DO NOT** reduce this timeout below 500ms - it causes race conditions on slower devices.
+
+---
+
 ## 5. Performance Requirements (Non-Negotiable)
 
 ### Animation Standards
