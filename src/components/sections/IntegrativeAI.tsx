@@ -10,8 +10,11 @@ import { gsap } from '@/lib/gsap-register';
  */
 export function IntegrativeAI() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const paragraph1Ref = useRef<HTMLParagraphElement>(null);
-  const paragraph2Ref = useRef<HTMLParagraphElement>(null);
+  const p1Ref = useRef<HTMLParagraphElement>(null);
+  const p2Ref = useRef<HTMLParagraphElement>(null);
+  const p3Ref = useRef<HTMLParagraphElement>(null);
+  const p4Ref = useRef<HTMLParagraphElement>(null);
+  const p5Ref = useRef<HTMLParagraphElement>(null);
 
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -34,8 +37,12 @@ export function IntegrativeAI() {
       );
     };
 
-    createFade(paragraph1Ref.current);
-    createFade(paragraph2Ref.current);
+    // Animate all paragraphs
+    createFade(p1Ref.current);
+    createFade(p2Ref.current);
+    createFade(p3Ref.current);
+    createFade(p4Ref.current);
+    createFade(p5Ref.current);
 
   }, { scope: sectionRef });
 
@@ -43,29 +50,25 @@ export function IntegrativeAI() {
     <section
       ref={sectionRef}
       className="relative min-h-screen py-32 px-8"
-      style={{
-        background: 'linear-gradient(180deg, #0075A3 0%, #005580 100%)',
-        zIndex: 30,
-      }}
     >
       <div className="max-w-[1400px] mx-auto space-y-16">
         <div className="text-white font-['Non_Bureau'] font-medium" style={{ fontSize: '39px', lineHeight: '1.4' }}>
-          <p ref={paragraph1Ref} className="mb-16 opacity-10">
+          <p ref={p1Ref} className="mb-16 opacity-10">
             Many see the new AI landscape as a threat.
           </p>
-          <p className="mb-16 opacity-20">
+          <p ref={p2Ref} className="mb-16 opacity-10">
             We see it as an alliance.
           </p>
-          <p className="mb-16 opacity-20">
+          <p ref={p3Ref} className="mb-16 opacity-10">
             We translate the colossal power of the world's most advanced models into elegant growth systems for the brands of tomorrow.
           </p>
         </div>
 
         <div className="text-white font-['Non_Bureau'] font-medium" style={{ fontSize: '39px', lineHeight: '1.4' }}>
-          <p ref={paragraph2Ref} className="mb-16 opacity-10">
+          <p ref={p4Ref} className="mb-16 opacity-10">
             The Giants are rewriting the rules of the market.
           </p>
-          <p className="opacity-20">
+          <p ref={p5Ref} className="opacity-10">
             You can fear the change, or you can befriend the creators.
           </p>
         </div>

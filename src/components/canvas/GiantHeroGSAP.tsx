@@ -49,12 +49,12 @@ export function GiantHeroGSAP() {
           setImages(loadedImages);
           setLoadingStatus("Done");
 
-          // CRITICAL: Give the DOM a millisecond to render the new height,
-          // then tell ScrollTrigger and Lenis to re-measure everything.
-          requestAnimationFrame(() => {
+          // CRITICAL "Handshake": Wait for DOM to settle after pinning
+          // 500ms delay allows pin-spacer to fully calculate before other ScrollTriggers measure
+          setTimeout(() => {
             ScrollTrigger.refresh();
-            console.log('🔄 Images loaded - ScrollTrigger refreshed');
-          });
+            console.log('🤝 Handshake complete - All ScrollTriggers refreshed after Hero pin');
+          }, 500);
         }
       };
       loadedImages.push(img);
@@ -97,6 +97,7 @@ export function GiantHeroGSAP() {
         markers: true,      // RESTORED MARKERS
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        refreshPriority: -1, // FIRST in the pinning chain - all other sections calculate after this
         onUpdate: () => render(),
         // Add this to ensure markers update if the page shifts
         onRefresh: () => console.log("🎯 GSAP Refreshed - Pin spacer recalculated"),

@@ -4,6 +4,7 @@ import React from 'react';
 import { GiantHeroGSAP } from '@/components/canvas/GiantHeroGSAP';
 import { IntegrativeAI } from '@/components/sections/IntegrativeAI';
 import GeometricCycleSection from '@/components/sections/HowCanWeHelp_v3';
+import VideoOverlaySection from '@/components/sections/VideoOverlaySection';
 import { Introduction } from '@/components/sections/Introduction';
 
 interface RightStageProps {
@@ -34,6 +35,9 @@ export function RightStage({ activeSection }: RightStageProps) {
                         <IntegrativeAI />
                         <GeometricCycleSection />
                     </div>
+
+                    {/* Video Overlay Section */}
+                    <VideoOverlaySection />
 
                     <div className="relative z-10 bg-giant-white min-h-screen w-full">
                         <Introduction />

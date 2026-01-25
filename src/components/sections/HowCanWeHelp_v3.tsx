@@ -53,6 +53,7 @@ export default function GeometricCycleSection() {
         end: "+=800%",
         pin: true,
         scrub: 1,
+        refreshPriority: -2, // Calculate AFTER GiantHeroGSAP (-1)
       },
     });
 
