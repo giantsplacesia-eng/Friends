@@ -250,20 +250,19 @@ export default function GeometricVideoPortal() {
     // --- PHASE 6: THE PORTAL TRANSITION (Radial Fade - Circle stays same size) ---
     tl.addLabel("portalStart");
 
+    // Start video playback at beginning of portal transition
+    tl.call(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0; // Reset to start
+        videoRef.current.play().catch(e => console.log('Video play failed:', e));
+      }
+    }, [], "portalStart");
+
     // Radial fade: Circle fades first (fastest), then outer rings, then background reveals
     tl.to({}, {
       duration: 2,
       onUpdate: function() {
         const p = this.progress();
-
-        // Sync video playback with scroll (scrub through video duration)
-        if (videoRef.current && videoRef.current.duration) {
-          const targetTime = p * videoRef.current.duration;
-          // Only update if significantly different to avoid jitter
-          if (Math.abs(videoRef.current.currentTime - targetTime) > 0.1) {
-            videoRef.current.currentTime = targetTime;
-          }
-        }
 
         if (sunRef.current) {
           // Keep circle at D*1.5 size (NO expansion) - PERFECT CIRCLE
@@ -332,6 +331,7 @@ export default function GeometricVideoPortal() {
       {/* LAYER 1: Background Video (Hidden initially, revealed through portal) */}
       <video
         ref={videoRef}
+        loop
         muted
         playsInline
         preload="auto"
