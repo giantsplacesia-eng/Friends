@@ -250,21 +250,15 @@ export default function GeometricVideoPortal() {
     // --- PHASE 6: THE PORTAL TRANSITION (Radial Fade - Circle stays same size) ---
     tl.addLabel("portalStart");
 
-    // Start video fade slightly BEFORE circle fade for smoother transition
-    tl.to(videoRef.current, {
-      opacity: 0.6,
-      duration: 2.5,
-      ease: "power2.inOut"
-    }, "portalStart-=0.3");
-
-    // Radial fade: Circle fades first (fastest), then outer rings, then background
+    // Radial fade: Circle fades first (fastest), then outer rings, then background reveals
     tl.to({}, {
       duration: 2,
       onUpdate: function() {
         const p = this.progress();
         if (sunRef.current) {
-          // Keep circle at D*1.5 size (NO expansion)
-          sunRef.current.setAttribute("points", getPoints('circle', D * 1.5, 960, 540));
+          // Keep circle at D*1.5 size (NO expansion) - PERFECT CIRCLE
+          const perfectCircle = getPoints('circle', D * 1.5, 960, 540, 0);
+          sunRef.current.setAttribute("points", perfectCircle);
           // Fade out FAST (circle disappears first - radial center)
           const circleFade = Math.pow(1 - p, 0.5); // Exponential fade (faster)
           sunRef.current.setAttribute("fill-opacity", circleFade.toString());
@@ -278,6 +272,13 @@ export default function GeometricVideoPortal() {
         });
       }
     }, "portalStart");
+
+    // Start video fade AFTER circle starts fading (background comes in last)
+    tl.to(videoRef.current, {
+      opacity: 0.6,
+      duration: 2.5,
+      ease: "power2.inOut"
+    }, "portalStart+=0.5"); // Delay video fade by 0.5s
 
     // Subtle video scale for depth
     tl.to(videoRef.current, {
