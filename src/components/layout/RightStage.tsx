@@ -3,8 +3,7 @@
 import React from 'react';
 import { GiantHeroGSAP } from '@/components/canvas/GiantHeroGSAP';
 import { IntegrativeAI } from '@/components/sections/IntegrativeAI';
-import GeometricCycleSection from '@/components/sections/HowCanWeHelp_v3';
-import VideoOverlaySection from '@/components/sections/VideoOverlaySection';
+import GeometricVideoPortal from '@/components/sections/GeometricVideoPortal';
 import { Introduction } from '@/components/sections/Introduction';
 
 interface RightStageProps {
@@ -23,7 +22,7 @@ export function RightStage({ activeSection }: RightStageProps) {
                     {/* Giant Hero Animation */}
                     <GiantHeroGSAP />
 
-                    {/* Blue gradient container for IntegrativeAI + HowCanWeHelp sections */}
+                    {/* Blue gradient container for IntegrativeAI section */}
                     <div
                         className="relative z-30 w-full"
                         style={{ background: 'linear-gradient(180deg, #0075A3 0%, #005580 100%)' }}
@@ -33,11 +32,10 @@ export function RightStage({ activeSection }: RightStageProps) {
                              style={{ backgroundImage: `url('https://assets.codepen.io/7558/noise-002.png')` }} />
 
                         <IntegrativeAI />
-                        <GeometricCycleSection />
                     </div>
 
-                    {/* Video Overlay Section */}
-                    <VideoOverlaySection />
+                    {/* Geometric Portal + Video Section (replaces HowCanWeHelp_v3 + VideoOverlaySection) */}
+                    <GeometricVideoPortal />
 
                     <div className="relative z-10 bg-giant-white min-h-screen w-full">
                         <Introduction />
