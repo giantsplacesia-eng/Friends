@@ -328,7 +328,7 @@ export default function GeometricVideoPortal() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-0"
       >
-        <source src="/videos/Background-video.mp4.mp4" type="video/mp4" />
+        <source src="/videos/A_cinematic_highfidelity_202601271238_k3ae3.mp4" type="video/mp4" />
       </video>
 
       {/* LAYER 2: SVG Geometry (Portal effect) */}
