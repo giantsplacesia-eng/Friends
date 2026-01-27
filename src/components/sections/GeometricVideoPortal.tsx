@@ -241,36 +241,40 @@ export default function GeometricVideoPortal() {
           const sunStart = getPoints('hexagon', D * 2, 960, 540);
           const sunEnd = getPoints('circle', D * 1.5, 960, 540);
           sunRef.current.setAttribute("points", gsap.utils.interpolate(sunStart, sunEnd, p));
+          sunRef.current.setAttribute("fill-opacity", "1"); // Ensure full opacity at end
         }
       }
     })
     .to({}, { duration: 1 }); // PAUSE at final Circle
 
-    // --- PHASE 6: THE PORTAL TRANSITION (Circle Expands -> Video Reveals) ---
+    // --- PHASE 6: THE PORTAL TRANSITION (Radial Fade - Circle stays same size) ---
     tl.addLabel("portalStart");
 
-    // Start video fade slightly BEFORE circle expansion for smoother transition
+    // Start video fade slightly BEFORE circle fade for smoother transition
     tl.to(videoRef.current, {
       opacity: 0.6,
       duration: 2.5,
       ease: "power2.inOut"
     }, "portalStart-=0.3");
 
-    // Expand circle and fade it out (creates "portal" effect)
+    // Radial fade: Circle fades first (fastest), then outer rings, then background
     tl.to({}, {
       duration: 2,
       onUpdate: function() {
         const p = this.progress();
         if (sunRef.current) {
-          // Expand circle from D*1.5 to D*15 (massive scale)
-          const sunR = (D * 1.5) + (D * 15 - D * 1.5) * p;
-          sunRef.current.setAttribute("points", getPoints('circle', sunR, 960, 540));
-          // Fade out as it expands
-          sunRef.current.setAttribute("fill-opacity", (1 - p).toString());
+          // Keep circle at D*1.5 size (NO expansion)
+          sunRef.current.setAttribute("points", getPoints('circle', D * 1.5, 960, 540));
+          // Fade out FAST (circle disappears first - radial center)
+          const circleFade = Math.pow(1 - p, 0.5); // Exponential fade (faster)
+          sunRef.current.setAttribute("fill-opacity", circleFade.toString());
         }
-        // Fade outer rings away
+        // Fade outer rings slower (radial outer edge)
         ringRefs.current.forEach(el => {
-          if (el) el.setAttribute("stroke-opacity", (0.1 * (1 - p)).toString());
+          if (el) {
+            const ringFade = Math.pow(1 - p, 1.5); // Slower fade (lags behind center)
+            el.setAttribute("stroke-opacity", (0.1 * ringFade).toString());
+          }
         });
       }
     }, "portalStart");
