@@ -255,6 +255,16 @@ export default function GeometricVideoPortal() {
       duration: 2,
       onUpdate: function() {
         const p = this.progress();
+
+        // Sync video playback with scroll (scrub through video duration)
+        if (videoRef.current && videoRef.current.duration) {
+          const targetTime = p * videoRef.current.duration;
+          // Only update if significantly different to avoid jitter
+          if (Math.abs(videoRef.current.currentTime - targetTime) > 0.1) {
+            videoRef.current.currentTime = targetTime;
+          }
+        }
+
         if (sunRef.current) {
           // Keep circle at D*1.5 size (NO expansion) - PERFECT CIRCLE
           const perfectCircle = getPoints('circle', D * 1.5, 960, 540, 0);
@@ -322,10 +332,9 @@ export default function GeometricVideoPortal() {
       {/* LAYER 1: Background Video (Hidden initially, revealed through portal) */}
       <video
         ref={videoRef}
-        autoPlay
-        loop
         muted
         playsInline
+        preload="auto"
         className="absolute inset-0 w-full h-full object-cover opacity-0"
       >
         <source src="/videos/A_cinematic_highfidelity_202601271238_k3ae3.mp4" type="video/mp4" />
