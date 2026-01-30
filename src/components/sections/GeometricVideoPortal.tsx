@@ -28,6 +28,7 @@ export default function GeometricVideoPortal() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const overlayContentRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLParagraphElement>(null);
 
   // Creature sprite refs
   const pufferfishRef = useRef<CreatureSpriteHandle>(null);
@@ -83,6 +84,13 @@ export default function GeometricVideoPortal() {
         markers: false,
       },
     });
+
+    // Fade in title at the start
+    tl.fromTo(titleRef.current,
+      { opacity: 0.1 },
+      { opacity: 1, duration: 1, ease: 'none' },
+      0 // Start at beginning
+    );
 
     // --- PHASE 1: INTRO (Scattered Circles -> Converge to Presentation Circle) ---
     tl.to({}, {
@@ -480,6 +488,7 @@ export default function GeometricVideoPortal() {
     });
 
     // --- PHASE 5: HEXAGON BACK TO CIRCLE (Setup for Portal) ---
+    // First morph back to circle with red color
     tl.to({}, {
       duration: 2,
       onUpdate: function() {
@@ -499,7 +508,23 @@ export default function GeometricVideoPortal() {
         }
       }
     })
-    .to({}, { duration: 1 }); // PAUSE at final Circle
+    .to({}, { duration: 0.5 }); // Brief pause at red circle
+
+    // Transition red circle to black
+    tl.to({}, {
+      duration: 1.5,
+      onUpdate: function() {
+        const p = this.progress();
+        if (sunRef.current) {
+          // Interpolate from red (#CF2402) to black (#000000)
+          const r = Math.round(207 * (1 - p)); // 207 = 0xCF
+          const g = Math.round(36 * (1 - p));  // 36 = 0x24
+          const b = Math.round(2 * (1 - p));   // 2 = 0x02
+          sunRef.current.setAttribute("fill", `rgb(${r}, ${g}, ${b})`);
+        }
+      }
+    })
+    .to({}, { duration: 0.5 }); // Pause at black circle
 
     // --- PHASE 6: THE PORTAL TRANSITION (Radial Fade - Circle stays same size) ---
     tl.addLabel("portalStart");
@@ -580,6 +605,14 @@ export default function GeometricVideoPortal() {
       ref={containerRef}
       className="relative w-full h-screen bg-giant-charcoal"
     >
+      {/* Title Text - Top Left Corner */}
+      <p
+        ref={titleRef}
+        className="absolute top-8 left-8 text-white font-['Non_Bureau'] font-medium opacity-10 z-30"
+        style={{ fontSize: '39px', lineHeight: '1.4', maxWidth: '500px' }}
+      >
+        What do you need help with?
+      </p>
 
       {/* LAYER 1: Background Video (Hidden initially, revealed through portal) */}
       <video
