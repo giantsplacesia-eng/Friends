@@ -116,15 +116,22 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "circlePresentation");
 
-    // Scrub pufferfish animation (1.5s)
+    // Scrub pufferfish animation (2.5s for 38 frames)
     if (pufferfishRef.current) {
       tl.to(pufferfishRef.current.animationProxy, {
-        frame: 23,
+        frame: 37,
         ease: 'none',
-        duration: 1.5,
+        duration: 2.5,
         onUpdate: () => pufferfishRef.current?.render()
       }, "circlePresentation+=0.2");
     }
+
+    // Fade in benefit card container
+    tl.to('.benefit-circle', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "circlePresentation+=0.5");
 
     // Letter-by-letter title reveal
     if (circleCardRef.current) {
@@ -215,15 +222,22 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "squarePresentation");
 
-    // Scrub chameleon animation (1.5s)
+    // Scrub chameleon animation (2.5s for 38 frames)
     if (chameleonRef.current) {
       tl.to(chameleonRef.current.animationProxy, {
-        frame: 23,
+        frame: 37,
         ease: 'none',
-        duration: 1.5,
+        duration: 2.5,
         onUpdate: () => chameleonRef.current?.render()
       }, "squarePresentation+=0.2");
     }
+
+    // Fade in benefit card container
+    tl.to('.benefit-square', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "squarePresentation+=0.5");
 
     // Letter-by-letter title reveal
     if (squareCardRef.current) {
@@ -314,15 +328,22 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "trianglePresentation");
 
-    // Scrub AI fish animation (1.5s)
+    // Scrub AI fish animation (2.5s for 38 frames)
     if (aifishRef.current) {
       tl.to(aifishRef.current.animationProxy, {
-        frame: 23,
+        frame: 37,
         ease: 'none',
-        duration: 1.5,
+        duration: 2.5,
         onUpdate: () => aifishRef.current?.render()
       }, "trianglePresentation+=0.2");
     }
+
+    // Fade in benefit card container
+    tl.to('.benefit-triangle', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "trianglePresentation+=0.5");
 
     // Letter-by-letter title reveal
     if (triangleCardRef.current) {
@@ -413,15 +434,22 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "hexagonPresentation");
 
-    // Scrub octopus animation (1.5s)
+    // Scrub octopus animation (2.5s for 38 frames)
     if (octopusRef.current) {
       tl.to(octopusRef.current.animationProxy, {
-        frame: 23,
+        frame: 37,
         ease: 'none',
-        duration: 1.5,
+        duration: 2.5,
         onUpdate: () => octopusRef.current?.render()
       }, "hexagonPresentation+=0.2");
     }
+
+    // Fade in benefit card container
+    tl.to('.benefit-hexagon', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "hexagonPresentation+=0.5");
 
     // Letter-by-letter title reveal
     if (hexagonCardRef.current) {
@@ -575,7 +603,7 @@ export default function GeometricVideoPortal() {
       </video>
 
       {/* LAYER 2: SVG Geometry (Portal effect) */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center">
+      <div className="absolute inset-0 z-5 flex items-center justify-center">
         <svg viewBox="0 0 1920 1080" className="w-full h-full">
           <defs>
             <filter id="glow">

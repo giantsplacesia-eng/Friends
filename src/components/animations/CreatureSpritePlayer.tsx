@@ -56,14 +56,14 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
     const config = creatureConfig[creature];
 
     /**
-     * Calculate 24 evenly distributed frame indices
+     * Calculate 38 evenly distributed frame indices
      * First frame = 1, Last frame = totalFrames, middle frames evenly spaced
      */
     const getFrameIndices = (totalFrames: number): number[] => {
       const indices: number[] = [];
-      const step = (totalFrames - 1) / (24 - 1);
+      const step = (totalFrames - 1) / (38 - 1);
 
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 38; i++) {
         const frameIndex = Math.round(1 + i * step);
         indices.push(frameIndex);
       }
@@ -71,7 +71,7 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
       return indices;
     };
 
-    // Preload 24 selected frames
+    // Preload 38 selected frames
     useEffect(() => {
       const frameIndices = getFrameIndices(config.totalFrames);
       const images: HTMLImageElement[] = [];
@@ -83,10 +83,10 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
 
         img.onload = () => {
           loadedCount++;
-          if (loadedCount === 24) {
+          if (loadedCount === 38) {
             imagesRef.current = images;
             onReady?.();
-            console.log(`✅ ${creature} loaded 24 frames:`, frameIndices);
+            console.log(`✅ ${creature} loaded 38 frames:`, frameIndices);
           }
         };
 
@@ -113,7 +113,7 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      const index = Math.min(Math.max(Math.floor(animationProxy.current.frame), 0), 23);
+      const index = Math.min(Math.max(Math.floor(animationProxy.current.frame), 0), 37);
       const img = imagesRef.current[index];
 
       if (img?.complete) {
@@ -139,7 +139,7 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
         ref={canvasRef}
         width={600}
         height={600}
-        className={`absolute inset-0 m-auto opacity-0 pointer-events-none ${className}`}
+        className={`absolute inset-0 m-auto opacity-0 pointer-events-none z-15 ${className}`}
         style={{ mixBlendMode: 'normal', maxWidth: '600px', maxHeight: '600px' }}
       />
     );
