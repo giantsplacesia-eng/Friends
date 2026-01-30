@@ -37,7 +37,7 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
         getFileName: (index: number) => `Comp ${(index + 299).toString()}.webp`
       },
       aifish: {
-        totalFrames: 38,
+        totalFrames: 37,
         basePath: '/How we can help characters/AI brain',
         getFileName: (index: number) => `${index.toString().padStart(2, '0')}.webp`
       },
