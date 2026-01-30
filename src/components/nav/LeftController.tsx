@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-register';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { AnimatedFWGLogo } from './AnimatedFWGLogo';
 
 interface NavItem {
   id: string;
@@ -66,23 +66,17 @@ export function LeftController({ activeSection, onSectionChange }: LeftControlle
         transform: 'translateZ(0)', // GPU acceleration
       }}
     >
-      <div className="pt-8 pb-4 px-8 cursor-pointer w-full" onClick={() => onSectionChange('home')}>
-        {/* Logo - matches button padding */}
+      <div className="pt-8 pb-4 cursor-pointer w-full" onClick={() => onSectionChange('home')} style={{ paddingLeft: '48px', paddingRight: '48px' }}>
+        {/* Logo - increased left/right padding by 20px, with smile animation on scroll */}
         <div className="relative w-full h-auto">
-          <Image
-            src="/logo svgs/FWGlogo.svg"
-            alt="Friends with Giants"
-            width={281}
-            height={281}
-            className="w-full h-auto"
-            priority
-          />
+          <AnimatedFWGLogo />
         </div>
       </div>
 
-      <nav className="flex flex-col gap-4 w-full pb-20 px-8">
+      <nav className="flex flex-col w-full pb-20" style={{ paddingLeft: '48px', paddingRight: '48px', marginTop: '10px' }}>
         {navItems.map((item, index) => {
           const isActive = activeSection === item.id;
+          const isFirstButton = index === 0;
           return (
             <button
               key={item.id}
@@ -95,6 +89,7 @@ export function LeftController({ activeSection, onSectionChange }: LeftControlle
                   ? "bg-giant-red text-giant-orange text-[24px] h-[110px] flex items-center justify-center font-bold leading-none shadow-lg"
                   : "bg-giant-charcoal text-giant-orange h-[40px] flex items-center justify-center hover:bg-opacity-90 hover:shadow-md"
               )}
+              style={{ marginBottom: isFirstButton ? '60px' : '16px' }}
             >
               {item.label}
             </button>
