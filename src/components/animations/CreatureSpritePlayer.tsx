@@ -134,13 +134,16 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
       animationProxy: animationProxy.current
     }));
 
+    // Pufferfish is 25% smaller than other creatures
+    const size = creature === 'pufferfish' ? 450 : 600;
+
     return (
       <canvas
         ref={canvasRef}
-        width={600}
-        height={600}
+        width={size}
+        height={size}
         className={`absolute inset-0 m-auto opacity-0 pointer-events-none z-15 ${className}`}
-        style={{ mixBlendMode: 'normal', maxWidth: '600px', maxHeight: '600px' }}
+        style={{ mixBlendMode: 'normal', maxWidth: `${size}px`, maxHeight: `${size}px` }}
       />
     );
   }
