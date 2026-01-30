@@ -66,22 +66,42 @@ export function LeftController({ activeSection, onSectionChange }: LeftControlle
         transform: 'translateZ(0)', // GPU acceleration
       }}
     >
-      <div className="pt-8 pb-4 cursor-pointer w-full" onClick={() => onSectionChange('home')} style={{ paddingLeft: '48px', paddingRight: '48px' }}>
-        {/* Logo - increased left/right padding by 20px, with smile animation on scroll */}
-        <div className="relative w-full h-auto">
-          <AnimatedFWGLogo />
+      {/* Logo and First Button Container - Extra padding (72px left/right) */}
+      <div style={{ paddingLeft: '72px', paddingRight: '72px' }}>
+        <div className="pt-8 pb-4 cursor-pointer w-full" onClick={() => onSectionChange('home')}>
+          {/* Logo - with smile animation on left nav scroll */}
+          <div className="relative w-full h-auto">
+            <AnimatedFWGLogo />
+          </div>
+        </div>
+
+        {/* First Button - 10px gap below logo, reduced inner padding for narrower width */}
+        <div style={{ marginTop: '10px', marginBottom: '60px' }}>
+          <button
+            onClick={() => onSectionChange(navItems[0].id)}
+            ref={(el) => { buttonsRef.current[0] = el; }}
+            className={cn(
+              "block w-full py-3 px-3 rounded-md text-center transition-all duration-500",
+              "italic uppercase tracking-[0.08em] font-medium text-sm",
+              activeSection === navItems[0].id
+                ? "bg-giant-red text-giant-orange text-[24px] h-[110px] flex items-center justify-center font-bold leading-none shadow-lg"
+                : "bg-giant-charcoal text-giant-orange h-[40px] flex items-center justify-center hover:bg-opacity-90 hover:shadow-md"
+            )}
+          >
+            {navItems[0].label}
+          </button>
         </div>
       </div>
 
-      <nav className="flex flex-col w-full pb-20" style={{ paddingLeft: '48px', paddingRight: '48px', marginTop: '10px' }}>
-        {navItems.map((item, index) => {
+      {/* Other Buttons - Normal padding (32px / px-8) with extra top margin for gap */}
+      <nav className="flex flex-col gap-4 w-full pb-20 px-8" style={{ marginTop: '70px' }}>
+        {navItems.slice(1).map((item, index) => {
           const isActive = activeSection === item.id;
-          const isFirstButton = index === 0;
           return (
             <button
               key={item.id}
               onClick={() => onSectionChange(item.id)}
-              ref={(el) => { buttonsRef.current[index] = el; }}
+              ref={(el) => { buttonsRef.current[index + 1] = el; }}
               className={cn(
                 "block w-full py-3 px-6 rounded-md text-center transition-all duration-500",
                 "italic uppercase tracking-[0.08em] font-medium text-sm",
@@ -89,7 +109,6 @@ export function LeftController({ activeSection, onSectionChange }: LeftControlle
                   ? "bg-giant-red text-giant-orange text-[24px] h-[110px] flex items-center justify-center font-bold leading-none shadow-lg"
                   : "bg-giant-charcoal text-giant-orange h-[40px] flex items-center justify-center hover:bg-opacity-90 hover:shadow-md"
               )}
-              style={{ marginBottom: isFirstButton ? '60px' : '16px' }}
             >
               {item.label}
             </button>
