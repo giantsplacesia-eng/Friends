@@ -3,6 +3,7 @@
 import React from 'react';
 import { GiantHeroGSAP } from '@/components/canvas/GiantHeroGSAP';
 import { IntegrativeAI } from '@/components/sections/IntegrativeAI';
+import { HowCanWeHelpTitle } from '@/components/sections/HowCanWeHelpTitle';
 import GeometricVideoPortal from '@/components/sections/GeometricVideoPortal';
 import { Introduction } from '@/components/sections/Introduction';
 
@@ -32,6 +33,9 @@ export function RightStage({ activeSection }: RightStageProps) {
 
                         <IntegrativeAI />
                     </div>
+
+                    {/* "What do you need help with?" Title Section */}
+                    <HowCanWeHelpTitle />
 
                     {/* Geometric Portal + Video Section (replaces HowCanWeHelp_v3 + VideoOverlaySection) */}
                     <GeometricVideoPortal />

@@ -4,6 +4,8 @@ import React, { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CreatureSpritePlayer, CreatureSpriteHandle } from "@/components/animations/CreatureSpritePlayer";
+import { BenefitContentCard, BenefitCardHandle, benefits } from "@/components/sections/BenefitContentCard";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -26,6 +28,18 @@ export default function GeometricVideoPortal() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const overlayContentRef = useRef<HTMLDivElement>(null);
+
+  // Creature sprite refs
+  const pufferfishRef = useRef<CreatureSpriteHandle>(null);
+  const chameleonRef = useRef<CreatureSpriteHandle>(null);
+  const aifishRef = useRef<CreatureSpriteHandle>(null);
+  const octopusRef = useRef<CreatureSpriteHandle>(null);
+
+  // Benefit card refs
+  const circleCardRef = useRef<BenefitCardHandle>(null);
+  const squareCardRef = useRef<BenefitCardHandle>(null);
+  const triangleCardRef = useRef<BenefitCardHandle>(null);
+  const hexagonCardRef = useRef<BenefitCardHandle>(null);
 
   // Helper for points (Circle, Square, Triangle, Hexagon)
   const getPoints = (type: string, r: number, cx: number, cy: number, rot = 0) => {
@@ -61,12 +75,12 @@ export default function GeometricVideoPortal() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        end: "+=1100%", // Extended for all phases including portal
+        end: "+=1200%", // Extended for all phases including portal + creature animations
         pin: true,
         pinSpacing: true,
         scrub: 1,
         refreshPriority: -2, // Calculate AFTER GiantHeroGSAP (-1)
-        markers: true,
+        markers: false,
       },
     });
 
@@ -90,8 +104,63 @@ export default function GeometricVideoPortal() {
           sunRef.current.setAttribute("points", getPoints('circle', sunR, 960, 540));
         }
       }
-    })
-    .to({}, { duration: 1 }); // PAUSE at Circle presentation
+    });
+
+    // --- CIRCLE PRESENTATION: Pufferfish + Business Growth ---
+    tl.addLabel("circlePresentation");
+
+    // Fade in pufferfish
+    tl.to('.creature-pufferfish', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "circlePresentation");
+
+    // Scrub pufferfish animation (1.5s)
+    if (pufferfishRef.current) {
+      tl.to(pufferfishRef.current.animationProxy, {
+        frame: 23,
+        ease: 'none',
+        duration: 1.5,
+        onUpdate: () => pufferfishRef.current?.render()
+      }, "circlePresentation+=0.2");
+    }
+
+    // Letter-by-letter title reveal
+    if (circleCardRef.current) {
+      tl.to(circleCardRef.current.titleCharsClass, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.03,
+        duration: 0.4,
+        ease: 'power2.out'
+      }, "circlePresentation+=0.8");
+
+      // Fade in description
+      tl.to(circleCardRef.current.descriptionClass, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out'
+      }, "circlePresentation+=1.5");
+
+      // Fade in button
+      tl.to(circleCardRef.current.buttonClass, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: 'back.out(1.7)'
+      }, "circlePresentation+=2");
+    }
+
+    // Hold for interaction
+    tl.to({}, { duration: 0.5 });
+
+    // Fade out everything
+    tl.to('.benefit-circle, .creature-pufferfish', {
+      opacity: 0,
+      duration: 0.5
+    });
 
     // --- PHASE 2: CIRCLE TO SQUARE CYCLE ---
     tl.to({}, {
@@ -134,8 +203,63 @@ export default function GeometricVideoPortal() {
           sunRef.current.setAttribute("points", gsap.utils.interpolate(sunStart, sunEnd, p));
         }
       }
-    })
-    .to({}, { duration: 1 }); // PAUSE at Square presentation
+    });
+
+    // --- SQUARE PRESENTATION: Chameleon + Brand Evolution ---
+    tl.addLabel("squarePresentation");
+
+    // Fade in chameleon
+    tl.to('.creature-chameleon', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "squarePresentation");
+
+    // Scrub chameleon animation (1.5s)
+    if (chameleonRef.current) {
+      tl.to(chameleonRef.current.animationProxy, {
+        frame: 23,
+        ease: 'none',
+        duration: 1.5,
+        onUpdate: () => chameleonRef.current?.render()
+      }, "squarePresentation+=0.2");
+    }
+
+    // Letter-by-letter title reveal
+    if (squareCardRef.current) {
+      tl.to(squareCardRef.current.titleCharsClass, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.03,
+        duration: 0.4,
+        ease: 'power2.out'
+      }, "squarePresentation+=0.8");
+
+      // Fade in description
+      tl.to(squareCardRef.current.descriptionClass, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out'
+      }, "squarePresentation+=1.5");
+
+      // Fade in button
+      tl.to(squareCardRef.current.buttonClass, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: 'back.out(1.7)'
+      }, "squarePresentation+=2");
+    }
+
+    // Hold for interaction
+    tl.to({}, { duration: 0.5 });
+
+    // Fade out everything
+    tl.to('.benefit-square, .creature-chameleon', {
+      opacity: 0,
+      duration: 0.5
+    });
 
     // --- PHASE 3: SQUARE TO TRIANGLE CYCLE ---
     tl.to({}, {
@@ -178,8 +302,63 @@ export default function GeometricVideoPortal() {
           sunRef.current.setAttribute("points", gsap.utils.interpolate(sunStart, sunEnd, p));
         }
       }
-    })
-    .to({}, { duration: 1 }); // PAUSE at Triangle presentation
+    });
+
+    // --- TRIANGLE PRESENTATION: AI Fish + AI Implementation ---
+    tl.addLabel("trianglePresentation");
+
+    // Fade in AI fish
+    tl.to('.creature-aifish', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "trianglePresentation");
+
+    // Scrub AI fish animation (1.5s)
+    if (aifishRef.current) {
+      tl.to(aifishRef.current.animationProxy, {
+        frame: 23,
+        ease: 'none',
+        duration: 1.5,
+        onUpdate: () => aifishRef.current?.render()
+      }, "trianglePresentation+=0.2");
+    }
+
+    // Letter-by-letter title reveal
+    if (triangleCardRef.current) {
+      tl.to(triangleCardRef.current.titleCharsClass, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.03,
+        duration: 0.4,
+        ease: 'power2.out'
+      }, "trianglePresentation+=0.8");
+
+      // Fade in description
+      tl.to(triangleCardRef.current.descriptionClass, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out'
+      }, "trianglePresentation+=1.5");
+
+      // Fade in button
+      tl.to(triangleCardRef.current.buttonClass, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: 'back.out(1.7)'
+      }, "trianglePresentation+=2");
+    }
+
+    // Hold for interaction
+    tl.to({}, { duration: 0.5 });
+
+    // Fade out everything
+    tl.to('.benefit-triangle, .creature-aifish', {
+      opacity: 0,
+      duration: 0.5
+    });
 
     // --- PHASE 4: TRIANGLE TO HEXAGON CYCLE ---
     tl.to({}, {
@@ -222,8 +401,63 @@ export default function GeometricVideoPortal() {
           sunRef.current.setAttribute("points", gsap.utils.interpolate(sunStart, sunEnd, p));
         }
       }
-    })
-    .to({}, { duration: 1 }); // PAUSE at Hexagon presentation
+    });
+
+    // --- HEXAGON PRESENTATION: Octopus + Strategic Roadmap ---
+    tl.addLabel("hexagonPresentation");
+
+    // Fade in octopus
+    tl.to('.creature-octopus', {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    }, "hexagonPresentation");
+
+    // Scrub octopus animation (1.5s)
+    if (octopusRef.current) {
+      tl.to(octopusRef.current.animationProxy, {
+        frame: 23,
+        ease: 'none',
+        duration: 1.5,
+        onUpdate: () => octopusRef.current?.render()
+      }, "hexagonPresentation+=0.2");
+    }
+
+    // Letter-by-letter title reveal
+    if (hexagonCardRef.current) {
+      tl.to(hexagonCardRef.current.titleCharsClass, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.03,
+        duration: 0.4,
+        ease: 'power2.out'
+      }, "hexagonPresentation+=0.8");
+
+      // Fade in description
+      tl.to(hexagonCardRef.current.descriptionClass, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out'
+      }, "hexagonPresentation+=1.5");
+
+      // Fade in button
+      tl.to(hexagonCardRef.current.buttonClass, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: 'back.out(1.7)'
+      }, "hexagonPresentation+=2");
+    }
+
+    // Hold for interaction
+    tl.to({}, { duration: 0.5 });
+
+    // Fade out everything
+    tl.to('.benefit-hexagon, .creature-octopus', {
+      opacity: 0,
+      duration: 0.5
+    });
 
     // --- PHASE 5: HEXAGON BACK TO CIRCLE (Setup for Portal) ---
     tl.to({}, {
@@ -355,22 +589,62 @@ export default function GeometricVideoPortal() {
               <polygon
                 key={i}
                 ref={(el) => (ringRefs.current[i] = el)}
-                className="fill-none stroke-white"
+                className="fill-none stroke-giant-orange"
                 strokeWidth="1"
               />
             ))}
             {/* Central Sun (Portal center) */}
             <polygon
               ref={sunRef}
-              className="fill-white stroke-none"
+              className="fill-giant-red stroke-none"
               fillOpacity="1"
             />
           </g>
         </svg>
 
         {/* Central Shadow for Sun depth */}
-        <div className="absolute w-24 h-24 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute w-24 h-24 bg-giant-red/10 rounded-full blur-3xl pointer-events-none" />
       </div>
+
+      {/* LAYER 2.5: Creature Sprites (Scroll-scrubbed animations) */}
+      <CreatureSpritePlayer
+        ref={pufferfishRef}
+        creature="pufferfish"
+        className="creature-pufferfish"
+      />
+      <CreatureSpritePlayer
+        ref={chameleonRef}
+        creature="chameleon"
+        className="creature-chameleon"
+      />
+      <CreatureSpritePlayer
+        ref={aifishRef}
+        creature="aifish"
+        className="creature-aifish"
+      />
+      <CreatureSpritePlayer
+        ref={octopusRef}
+        creature="octopus"
+        className="creature-octopus"
+      />
+
+      {/* LAYER 2.75: Benefit Content Cards (Text overlays) */}
+      <BenefitContentCard
+        ref={circleCardRef}
+        benefit={benefits[0]}
+      />
+      <BenefitContentCard
+        ref={squareCardRef}
+        benefit={benefits[1]}
+      />
+      <BenefitContentCard
+        ref={triangleCardRef}
+        benefit={benefits[2]}
+      />
+      <BenefitContentCard
+        ref={hexagonCardRef}
+        benefit={benefits[3]}
+      />
 
       {/* LAYER 3: Yellow Sliding Panel (Slides in from right after portal) */}
       <div
