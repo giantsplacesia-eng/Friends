@@ -49,29 +49,24 @@ export function IntegrativeAI() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen py-32 px-8"
+      className="relative min-h-screen py-32 px-8 flex items-center justify-center"
     >
-      <div className="max-w-[1400px] mx-auto space-y-16">
-        <div className="text-white font-['Non_Bureau'] font-medium" style={{ fontSize: '39px', lineHeight: '1.4' }}>
-          <p ref={p1Ref} className="mb-16 opacity-10">
-            Many see the new AI landscape as a threat.
-          </p>
-          <p ref={p2Ref} className="mb-16 opacity-10">
-            We see it as an alliance.
-          </p>
-          <p ref={p3Ref} className="mb-16 opacity-10">
-            We translate the colossal power of the world's most advanced models into elegant growth systems for the brands of tomorrow.
-          </p>
-        </div>
-
-        <div className="text-white font-['Non_Bureau'] font-medium" style={{ fontSize: '39px', lineHeight: '1.4' }}>
-          <p ref={p4Ref} className="mb-16 opacity-10">
-            The Giants are rewriting the rules of the market.
-          </p>
-          <p ref={p5Ref} className="opacity-10">
-            You can fear the change, or you can befriend the creators.
-          </p>
-        </div>
+      <div className="max-w-[800px] flex flex-col space-y-16">
+        <p ref={p1Ref} className="text-white font-['Non_Bureau'] font-medium opacity-10" style={{ fontSize: '39px', lineHeight: '1.4' }}>
+          Many see the new AI landscape as a threat.
+        </p>
+        <p ref={p2Ref} className="text-white font-['Non_Bureau'] font-medium opacity-10" style={{ fontSize: '39px', lineHeight: '1.4' }}>
+          We see it as an alliance.
+        </p>
+        <p ref={p3Ref} className="text-white font-['Non_Bureau'] font-medium opacity-10" style={{ fontSize: '39px', lineHeight: '1.4' }}>
+          We translate the colossal power of the world's most advanced models into elegant growth systems for the brands of tomorrow.
+        </p>
+        <p ref={p4Ref} className="text-white font-['Non_Bureau'] font-medium opacity-10" style={{ fontSize: '39px', lineHeight: '1.4' }}>
+          The Giants are rewriting the rules of the market.
+        </p>
+        <p ref={p5Ref} className="text-white font-['Non_Bureau'] font-medium opacity-10" style={{ fontSize: '39px', lineHeight: '1.4' }}>
+          You can fear the change, or you can befriend the creators.
+        </p>
       </div>
     </section>
   );

@@ -12,14 +12,14 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'services', label: 'Services' },
-  { id: 'work', label: 'Work' },
-  { id: 'process', label: 'Process' },
-  { id: 'insights', label: 'Insights' },
-  { id: 'careers', label: 'Careers' },
-  { id: 'connect', label: 'Connect' },
+  { id: 'home', label: 'WHAT. WHO. HOLLA' },
+  { id: 'operational-ai', label: 'OPERATIONAL AI' },
+  { id: 'search-visibility', label: 'SEARCH VISIBILITY' },
+  { id: 'paid-growth', label: 'PAID GROWTH' },
+  { id: 'digital-products', label: 'DIGITAL PRODUCTS' },
+  { id: 'brand-experience', label: 'BRAND EXPERIENCE' },
+  { id: 'intel', label: 'INTEL' },
+  { id: 'our-work', label: 'OUR WORK' },
 ];
 
 interface LeftControllerProps {

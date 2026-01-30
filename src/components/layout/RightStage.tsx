@@ -22,10 +22,9 @@ export function RightStage({ activeSection }: RightStageProps) {
                     {/* Giant Hero Animation */}
                     <GiantHeroGSAP />
 
-                    {/* Blue gradient container for IntegrativeAI section */}
+                    {/* Charcoal container for IntegrativeAI section */}
                     <div
-                        className="relative z-30 w-full"
-                        style={{ background: 'linear-gradient(180deg, #0075A3 0%, #005580 100%)' }}
+                        className="relative z-30 w-full bg-giant-charcoal"
                     >
                         {/* NOISE/GRAIN LAYER - Applied to entire blue section */}
                         <div className="absolute inset-0 z-50 pointer-events-none opacity-[0.05] contrast-150 brightness-100"

@@ -284,7 +284,7 @@ export default function GeometricVideoPortal() {
 
     // Start video fade AFTER circle starts fading (background comes in last)
     tl.to(videoRef.current, {
-      opacity: 0.6,
+      opacity: 1.0,
       duration: 2.5,
       ease: "power2.inOut"
     }, "portalStart+=0.5"); // Delay video fade by 0.5s
@@ -324,8 +324,7 @@ export default function GeometricVideoPortal() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen"
-      style={{ background: 'linear-gradient(180deg, #005580 0%, #000000 100%)' }}
+      className="relative w-full h-screen bg-giant-charcoal"
     >
 
       {/* LAYER 1: Background Video (Hidden initially, revealed through portal) */}
@@ -335,9 +334,10 @@ export default function GeometricVideoPortal() {
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-0"
+        className="absolute inset-0 w-full h-full opacity-0"
+        style={{ objectFit: 'contain', objectPosition: 'center' }}
       >
-        <source src="/videos/A_cinematic_highfidelity_202601271238_k3ae3.mp4" type="video/mp4" />
+        <source src="/videos/Homepage_video.mp4" type="video/mp4" />
       </video>
 
       {/* LAYER 2: SVG Geometry (Portal effect) */}
@@ -372,17 +372,17 @@ export default function GeometricVideoPortal() {
         <div className="absolute w-24 h-24 bg-white/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      {/* LAYER 3: Dark Sliding Panel (Slides in from right after portal) */}
+      {/* LAYER 3: Yellow Sliding Panel (Slides in from right after portal) */}
       <div
         ref={overlayRef}
         className="absolute top-0 right-0 h-full w-full md:w-[45%] lg:w-[38%]
-                   bg-zinc-950/80 backdrop-blur-2xl border-l border-white/10
-                   z-20 flex flex-col p-10 md:p-16 lg:p-20 text-white shadow-2xl"
+                   bg-giant-orange backdrop-blur-2xl border-l border-white/10
+                   z-20 flex flex-col p-10 md:p-16 lg:p-20 text-giant-charcoal shadow-2xl"
       >
         {/* Section Header */}
         <div ref={overlayContentRef}>
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-2 h-2 bg-white" />
+            <div className="w-2 h-2 bg-giant-charcoal" />
             <span className="text-[10px] tracking-[0.4em] uppercase opacity-50 font-medium">
               Our Clients
             </span>
@@ -395,32 +395,26 @@ export default function GeometricVideoPortal() {
 
         {/* Dynamic Client List */}
         <div className="flex-1">
-          <div className="flex flex-col border-t border-white/10">
+          <div className="flex flex-col border-t border-giant-charcoal/20">
             {clients.map((client, i) => (
               <div
                 key={i}
-                className="client-row group flex justify-between items-center py-5 border-b border-white/5 hover:bg-white/[0.03] transition-colors cursor-pointer"
+                className="client-row group flex justify-between items-center py-5 border-b border-giant-charcoal/10 hover:bg-giant-charcoal/5 transition-colors cursor-pointer"
               >
-                <span className="text-sm font-light tracking-[0.2em] uppercase opacity-40 group-hover:opacity-100 transition-all duration-500 group-hover:translate-x-2">
+                <span className="text-sm font-light tracking-[0.2em] uppercase opacity-60 group-hover:opacity-100 transition-all duration-500 group-hover:translate-x-2">
                   {client}
                 </span>
-                <div className="w-1 h-1 bg-white/20 group-hover:bg-white group-hover:scale-150 transition-all duration-500" />
+                <div className="w-1 h-1 bg-giant-charcoal/30 group-hover:bg-giant-charcoal group-hover:scale-150 transition-all duration-500" />
               </div>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-auto pt-10 text-[9px] tracking-[0.3em] uppercase opacity-30">
+        <div className="mt-auto pt-10 text-[9px] tracking-[0.3em] uppercase opacity-40">
           Global Strategy // 2024
         </div>
       </div>
-
-      {/* Texture Overlay */}
-      <div
-        className="absolute inset-0 z-30 pointer-events-none opacity-[0.06]"
-        style={{ backgroundImage: `url('https://assets.codepen.io/7558/noise-002.png')` }}
-      />
     </section>
   );
 }
