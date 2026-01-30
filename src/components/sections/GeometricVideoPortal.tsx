@@ -133,32 +133,30 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "circlePresentation+=0.5");
 
-    // Letter-by-letter title reveal
-    if (circleCardRef.current) {
-      tl.to(circleCardRef.current.titleCharsClass, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.03,
-        duration: 0.4,
-        ease: 'power2.out'
-      }, "circlePresentation+=0.8");
+    // Letter-by-letter title reveal (using direct class selectors)
+    tl.to('.benefit-circle-char', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.03,
+      duration: 0.4,
+      ease: 'power2.out'
+    }, "circlePresentation+=0.8");
 
-      // Fade in description
-      tl.to(circleCardRef.current.descriptionClass, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, "circlePresentation+=1.5");
+    // Fade in description
+    tl.to('.benefit-circle-description', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out'
+    }, "circlePresentation+=1.5");
 
-      // Fade in button
-      tl.to(circleCardRef.current.buttonClass, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.4,
-        ease: 'back.out(1.7)'
-      }, "circlePresentation+=2");
-    }
+    // Fade in button
+    tl.to('.benefit-circle-button', {
+      opacity: 1,
+      scale: 1,
+      duration: 0.4,
+      ease: 'back.out(1.7)'
+    }, "circlePresentation+=2");
 
     // Hold for interaction
     tl.to({}, { duration: 0.5 });
@@ -239,32 +237,30 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "squarePresentation+=0.5");
 
-    // Letter-by-letter title reveal
-    if (squareCardRef.current) {
-      tl.to(squareCardRef.current.titleCharsClass, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.03,
-        duration: 0.4,
-        ease: 'power2.out'
-      }, "squarePresentation+=0.8");
+    // Letter-by-letter title reveal (using direct class selectors)
+    tl.to('.benefit-square-char', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.03,
+      duration: 0.4,
+      ease: 'power2.out'
+    }, "squarePresentation+=0.8");
 
-      // Fade in description
-      tl.to(squareCardRef.current.descriptionClass, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, "squarePresentation+=1.5");
+    // Fade in description
+    tl.to('.benefit-square-description', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out'
+    }, "squarePresentation+=1.5");
 
-      // Fade in button
-      tl.to(squareCardRef.current.buttonClass, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.4,
-        ease: 'back.out(1.7)'
-      }, "squarePresentation+=2");
-    }
+    // Fade in button
+    tl.to('.benefit-square-button', {
+      opacity: 1,
+      scale: 1,
+      duration: 0.4,
+      ease: 'back.out(1.7)'
+    }, "squarePresentation+=2");
 
     // Hold for interaction
     tl.to({}, { duration: 0.5 });
@@ -345,32 +341,30 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "trianglePresentation+=0.5");
 
-    // Letter-by-letter title reveal
-    if (triangleCardRef.current) {
-      tl.to(triangleCardRef.current.titleCharsClass, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.03,
-        duration: 0.4,
-        ease: 'power2.out'
-      }, "trianglePresentation+=0.8");
+    // Letter-by-letter title reveal (using direct class selectors)
+    tl.to('.benefit-triangle-char', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.03,
+      duration: 0.4,
+      ease: 'power2.out'
+    }, "trianglePresentation+=0.8");
 
-      // Fade in description
-      tl.to(triangleCardRef.current.descriptionClass, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, "trianglePresentation+=1.5");
+    // Fade in description
+    tl.to('.benefit-triangle-description', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out'
+    }, "trianglePresentation+=1.5");
 
-      // Fade in button
-      tl.to(triangleCardRef.current.buttonClass, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.4,
-        ease: 'back.out(1.7)'
-      }, "trianglePresentation+=2");
-    }
+    // Fade in button
+    tl.to('.benefit-triangle-button', {
+      opacity: 1,
+      scale: 1,
+      duration: 0.4,
+      ease: 'back.out(1.7)'
+    }, "trianglePresentation+=2");
 
     // Hold for interaction
     tl.to({}, { duration: 0.5 });
@@ -451,32 +445,30 @@ export default function GeometricVideoPortal() {
       ease: 'power2.inOut'
     }, "hexagonPresentation+=0.5");
 
-    // Letter-by-letter title reveal
-    if (hexagonCardRef.current) {
-      tl.to(hexagonCardRef.current.titleCharsClass, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.03,
-        duration: 0.4,
-        ease: 'power2.out'
-      }, "hexagonPresentation+=0.8");
+    // Letter-by-letter title reveal (using direct class selectors)
+    tl.to('.benefit-hexagon-char', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.03,
+      duration: 0.4,
+      ease: 'power2.out'
+    }, "hexagonPresentation+=0.8");
 
-      // Fade in description
-      tl.to(hexagonCardRef.current.descriptionClass, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, "hexagonPresentation+=1.5");
+    // Fade in description
+    tl.to('.benefit-hexagon-description', {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out'
+    }, "hexagonPresentation+=1.5");
 
-      // Fade in button
-      tl.to(hexagonCardRef.current.buttonClass, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.4,
-        ease: 'back.out(1.7)'
-      }, "hexagonPresentation+=2");
-    }
+    // Fade in button
+    tl.to('.benefit-hexagon-button', {
+      opacity: 1,
+      scale: 1,
+      duration: 0.4,
+      ease: 'back.out(1.7)'
+    }, "hexagonPresentation+=2");
 
     // Hold for interaction
     tl.to({}, { duration: 0.5 });

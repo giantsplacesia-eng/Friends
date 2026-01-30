@@ -46,9 +46,9 @@ export const CreatureSpritePlayer = forwardRef<CreatureSpriteHandle, CreatureSpr
         basePath: '/How we can help characters/Octopuse',
         // Octopus uses timestamp-based naming - we'll need to list these
         getFileName: (index: number) => {
-          // Mapping for octopus frames (timestamps go from 133400 to 133426)
+          // Index is 1-based, convert to 0-based for array access
           const timestamps = Array.from({ length: 64 }, (_, i) => 133400 + i);
-          return `The_octopus_moves_1080p_20260130${timestamps[index]}.webp`;
+          return `The_octopus_moves_1080p_20260130${timestamps[index - 1]}.webp`;
         }
       }
     };
