@@ -709,10 +709,10 @@ export default function GeometricVideoPortal() {
         benefit={benefits[3]}
       />
 
-      {/* LAYER 3: Dark Gray Sliding Panel (Slides in from right after portal) */}
+      {/* LAYER 3: Dark Gray Sliding Panel (Slides in from right after portal) - Reduced width by 25% */}
       <div
         ref={overlayRef}
-        className="absolute top-0 right-0 h-full w-full md:w-[45%] lg:w-[38%]
+        className="absolute top-0 right-0 h-full w-full md:w-[34%] lg:w-[29%]
                    backdrop-blur-2xl border-l border-white/10
                    z-20 flex flex-col p-10 md:p-16 lg:p-20 text-white shadow-2xl"
         style={{ backgroundColor: 'rgba(44, 48, 47, 0.5)' }}
